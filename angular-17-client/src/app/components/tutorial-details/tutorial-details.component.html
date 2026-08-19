@@ -45,29 +45,27 @@
         <label><strong>Status:</strong></label>
         {{ currentTutorial.published ? "Published" : "Pending" }}
       </div>
-    </form>
-
     @if (currentTutorial.published) {
-    <button class="badge badge-primary mr-2"
+    <button type="button" class="badge badge-primary mr-2"
       (click)="updatePublished(false)" >
       UnPublish
     </button>
     } @else {
-    <button class="badge badge-primary mr-2" (click)="updatePublished(true)">
+    <button type="button" class="badge badge-primary mr-2" (click)="updatePublished(true)">
       Publish
     </button>
     }
 
-    <button class="badge badge-danger mr-2" (click)="deleteTutorial()">
+    <button type="button" class="badge badge-danger mr-2" (click)="deleteTutorial()">
       Delete
     </button>
 
     <button
       type="submit"
-      class="badge badge-success mb-2"
-      type="submit">
+      class="badge badge-success mb-2">
       Update
     </button>
+    </form>
     <p>{{ message }}</p>
   </div>
   } @else {<p>Cannot access this Tutorial...</p>}

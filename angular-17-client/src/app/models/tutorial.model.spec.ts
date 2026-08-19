@@ -1,3 +1,5 @@
+/// <reference types="jasmine" />
+
 import { Tutorial } from './tutorial.model';
 
 describe('Tutorial', () => {
