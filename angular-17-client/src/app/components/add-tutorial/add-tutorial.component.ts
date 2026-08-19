@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Tutorial } from '../../models/tutorial.model';
+import { FormBuilder, Validators } from '@angular/forms';
 import { TutorialService } from '../../services/tutorial.service';
 
 @Component({
@@ -8,19 +8,26 @@ import { TutorialService } from '../../services/tutorial.service';
   styleUrls: ['./add-tutorial.component.css'],
 })
 export class AddTutorialComponent {
-  tutorial: Tutorial = {
-    title: '',
-    description: '',
-    published: false
-  };
+  tutorialForm = this.formBuilder.nonNullable.group({
+    title: ['', Validators.required],
+    description: ['', Validators.required]
+  });
   submitted = false;
 
-  constructor(private tutorialService: TutorialService) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private tutorialService: TutorialService
+  ) {}
 
   saveTutorial(): void {
+    if (this.tutorialForm.invalid) {
+      this.tutorialForm.markAllAsTouched();
+      return;
+    }
+
     const data = {
-      title: this.tutorial.title,
-      description: this.tutorial.description
+      title: this.tutorialForm.controls.title.value,
+      description: this.tutorialForm.controls.description.value
     };
 
     this.tutorialService.create(data).subscribe({
@@ -34,10 +41,6 @@ export class AddTutorialComponent {
 
   newTutorial(): void {
     this.submitted = false;
-    this.tutorial = {
-      title: '',
-      description: '',
-      published: false
-    };
+    this.tutorialForm.reset();
   }
 }

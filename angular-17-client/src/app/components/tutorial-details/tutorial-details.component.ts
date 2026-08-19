@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Tutorial } from '../../models/tutorial.model';
 import { TutorialService } from '../../services/tutorial.service';
@@ -17,9 +18,14 @@ export class TutorialDetailsComponent implements OnInit {
     published: false
   };
 
+  tutorialForm = this.formBuilder.nonNullable.group({
+    title: ['', Validators.required],
+    description: ['', Validators.required]
+  });
   message = '';
 
   constructor(
+    private formBuilder: FormBuilder,
     private tutorialService: TutorialService,
     private route: ActivatedRoute,
     private router: Router
@@ -36,6 +42,10 @@ export class TutorialDetailsComponent implements OnInit {
     this.tutorialService.get(id).subscribe({
       next: (data) => {
         this.currentTutorial = data;
+        this.tutorialForm.patchValue({
+          title: data.title ?? '',
+          description: data.description ?? ''
+        });
         console.log(data);
       },
       error: (e) => console.error(e)
@@ -44,8 +54,8 @@ export class TutorialDetailsComponent implements OnInit {
 
   updatePublished(status: boolean): void {
     const data = {
-      title: this.currentTutorial.title,
-      description: this.currentTutorial.description,
+      title: this.tutorialForm.controls.title.value,
+      description: this.tutorialForm.controls.description.value,
       published: status
     };
 
@@ -64,10 +74,19 @@ export class TutorialDetailsComponent implements OnInit {
   }
 
   updateTutorial(): void {
+    if (this.tutorialForm.invalid) {
+      this.tutorialForm.markAllAsTouched();
+      return;
+    }
+
     this.message = '';
 
     this.tutorialService
-      .update(this.currentTutorial.id, this.currentTutorial)
+      .update(this.currentTutorial.id, {
+        title: this.tutorialForm.controls.title.value,
+        description: this.tutorialForm.controls.description.value,
+        published: this.currentTutorial.published
+      })
       .subscribe({
         next: (res) => {
           console.log(res);

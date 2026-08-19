@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Tutorial } from '../../models/tutorial.model';
 import { TutorialService } from '../../services/tutorial.service';
 
@@ -11,7 +12,7 @@ export class TutorialsListComponent implements OnInit {
   tutorials?: Tutorial[];
   currentTutorial: Tutorial = {};
   currentIndex = -1;
-  title = '';
+  titleControl = new FormControl('', { nonNullable: true });
 
   constructor(private tutorialService: TutorialService) {}
 
@@ -54,7 +55,7 @@ export class TutorialsListComponent implements OnInit {
     this.currentTutorial = {};
     this.currentIndex = -1;
 
-    this.tutorialService.findByTitle(this.title).subscribe({
+    this.tutorialService.findByTitle(this.titleControl.value).subscribe({
       next: (data) => {
         this.tutorials = data;
         console.log(data);
