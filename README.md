@@ -82,10 +82,8 @@ OrderStoreService
 
 Open the guide here:
 
-- [View the HTML file on GitHub](https://github.com/seedforsuccess/AngularCrudDemo/blob/main/angular-interview-guide-2.html)
-- [Open the rendered HTML guide](https://htmlpreview.github.io/?https://raw.githubusercontent.com/seedforsuccess/AngularCrudDemo/main/angular-interview-guide-2.html)
-
-The local file is also available at [angular-interview-guide-2.html](angular-interview-guide-2.html).
+- [View the interview guide on GitHub](https://github.com/seedforsuccess/AngularCrudDemo/blob/main/interview_guide.md)
+- [Open the local Markdown guide](interview_guide.md)
 
 The guide contains visual explanations of:
 
