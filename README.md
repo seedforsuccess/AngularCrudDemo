@@ -80,7 +80,14 @@ OrderStoreService
 
 ## Interview Guide
 
-Open [angular-interview-guide-2.html](angular-interview-guide-2.html) directly in a browser for visual explanations of:
+Open the guide here:
+
+- [View the HTML file on GitHub](https://github.com/seedforsuccess/AngularCrudDemo/blob/main/angular-interview-guide-2.html)
+- [Open the rendered HTML guide](https://htmlpreview.github.io/?https://raw.githubusercontent.com/seedforsuccess/AngularCrudDemo/main/angular-interview-guide-2.html)
+
+The local file is also available at [angular-interview-guide-2.html](angular-interview-guide-2.html).
+
+The guide contains visual explanations of:
 
 - Layered and tree architecture diagrams.
 - Parent, child, and sibling relationships.
