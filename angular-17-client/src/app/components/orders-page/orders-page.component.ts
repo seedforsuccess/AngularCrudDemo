@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Order } from '../../models/order.model';
 import { OrderStoreService } from '../../services/order-store.service';
 
 @Component({
@@ -12,4 +13,8 @@ export class OrdersPageComponent {
   readonly error$ = this.orderStore.error$;
 
   constructor(private orderStore: OrderStoreService) {}
+
+  onOrderSelected(order: Order): void {
+    this.orderStore.select(order);
+  }
 }

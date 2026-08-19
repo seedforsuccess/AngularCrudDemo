@@ -15,7 +15,10 @@
   <app-order-search></app-order-search>
 
   <div class="orders-layout">
-    <app-order-list [orders]="(orders$ | async) ?? []"></app-order-list>
+    <app-order-list
+      [orders]="(orders$ | async) ?? []"
+      (orderSelected)="onOrderSelected($event)">
+    </app-order-list>
     <app-order-form [selectedOrder]="selectedOrder$ | async"></app-order-form>
   </div>
 </section>

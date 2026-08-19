@@ -1,6 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Order } from '../../models/order.model';
-import { OrderStoreService } from '../../services/order-store.service';
 
 @Component({
   selector: 'app-order-list',
@@ -9,10 +8,9 @@ import { OrderStoreService } from '../../services/order-store.service';
 })
 export class OrderListComponent {
   @Input() orders: Order[] = [];
-
-  constructor(private orderStore: OrderStoreService) {}
+  @Output() orderSelected = new EventEmitter<Order>();
 
   selectOrder(order: Order): void {
-    this.orderStore.select(order);
+    this.orderSelected.emit(order);
   }
 }
