@@ -1,0 +1,5 @@
+.search-panel { background: white; border: 1px solid #dbe2e6; border-radius: 6px; margin: 0 auto; max-width: 1200px; padding: 1rem 1.2rem; }
+.search-panel label { color: #17212b; display: block; font-weight: 700; margin-bottom: .45rem; }
+.search-row { display: flex; gap: .6rem; }
+.search-row input { max-width: 460px; }
+.search-panel small { color: #61707c; display: block; margin-top: .55rem; }

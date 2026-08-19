@@ -1,0 +1,24 @@
+<section class="orders-page">
+  <header class="orders-header">
+    <div>
+      <p class="eyebrow">RxJS order workspace</p>
+      <h1>Order operations</h1>
+      <p>Search, create, edit, and remove orders on one screen.</p>
+    </div>
+    <span class="architecture-note">Parent: OrdersPageComponent<br>Children share OrderStoreService</span>
+  </header>
+
+  @if (error$ | async; as error) {
+  <div class="alert alert-danger">{{ error }}</div>
+  }
+
+  <app-order-search></app-order-search>
+
+  <div class="orders-layout">
+    <app-order-list
+      [orders]="(orders$ | async) ?? []"
+      (orderSelected)="onOrderSelected($event)">
+    </app-order-list>
+    <app-order-form [selectedOrder]="selectedOrder$ | async"></app-order-form>
+  </div>
+</section>

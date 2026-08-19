@@ -1,0 +1,8 @@
+<section class="search-panel">
+  <label for="order-search">Search orders by customer</label>
+  <div class="search-row">
+    <input id="order-search" class="form-control" type="search" [formControl]="searchControl" placeholder="e.g. Priya" />
+    <button type="button" class="btn btn-outline-secondary" (click)="clearSearch()">Clear</button>
+  </div>
+  <small>RxJS valueChanges -> OrderStoreService -> debounceTime -> switchMap -> Spring Boot API</small>
+</section>

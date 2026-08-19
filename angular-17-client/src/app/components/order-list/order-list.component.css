@@ -1,0 +1,14 @@
+.list-panel { background: white; border: 1px solid #dbe2e6; border-radius: 6px; min-width: 0; padding: 1.2rem; }
+.panel-heading { align-items: end; display: flex; justify-content: space-between; margin-bottom: .9rem; }
+.panel-heading h2 { font-family: Georgia, 'Times New Roman', serif; margin: 0; }
+.panel-heading > span { color: #61707c; font-size: .85rem; }
+.eyebrow { color: #e8755b; font-size: .68rem; font-weight: 800; letter-spacing: .1em; margin: 0 0 .25rem; text-transform: uppercase; }
+.table-wrap { overflow-x: auto; }
+table { margin: 0; min-width: 600px; }
+tbody tr { cursor: pointer; }
+.status { border-radius: 20px; display: inline-block; font-size: .7rem; font-weight: 800; padding: .25rem .55rem; }
+.status.new { background: #e8f3f0; color: #075e59; }
+.status.processing { background: #fff1d6; color: #805b00; }
+.status.shipped { background: #e2edff; color: #24568d; }
+.status.cancelled { background: #ffe4df; color: #9e3b2d; }
+.empty-state { color: #61707c; padding: 2rem 0; text-align: center; }

@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Angular Order CRUD Architecture Guide</title>
+  <style>
+    :root{--ink:#17212b;--muted:#62717b;--line:#d8e2e3;--paper:#f5f8f7;--teal:#087f78;--dark:#075e59;--coral:#e8755b;--gold:#c49120}
+    *{box-sizing:border-box} body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Arial,sans-serif}.shell{max-width:1200px;margin:auto;padding:36px 22px 70px}
+    .eyebrow,.tag,.step-no{color:var(--coral);font-size:.7rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase}.eyebrow{margin:0 0 6px}h1,h2,h3{font-family:Georgia,'Times New Roman',serif;line-height:1.12}h1{font-size:clamp(2.2rem,5vw,4.3rem);margin:0 0 12px;max-width:850px}h2{font-size:1.45rem;margin:0 0 10px}h3{font-size:1.15rem;margin:0 0 8px}.intro{color:var(--muted);font-size:1.08rem;margin:0;max-width:850px}
+    .tabs{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;border-bottom:1px solid var(--line);margin:32px 0 26px}.tabs button{border:0;border-bottom:3px solid transparent;background:transparent;color:var(--muted);cursor:pointer;font:inherit;font-weight:700;padding:14px 12px 12px;text-align:left}.tabs button:hover,.tabs button.active{background:#e5f2ef;border-bottom-color:var(--teal);color:var(--dark)}.tabs .number{display:block;color:var(--coral);font-size:.7rem;margin-bottom:4px}
+    .panel{display:none}.panel.active{display:block}.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.card,.callout{background:#fff;border:1px solid var(--line);border-radius:6px;padding:20px}.card p,.callout p{color:var(--muted);margin:0}.card.parent{border-top:4px solid var(--teal)}.card.child{border-top:4px solid var(--coral)}.card.sibling{border-top:4px solid var(--gold)}
+    pre{background:#17262b;border-left:3px solid var(--coral);border-radius:3px;color:#e8f3ef;font:13px/1.55 Consolas,monospace;margin:15px 0 0;overflow:auto;padding:14px;white-space:pre-wrap}code{font-family:Consolas,monospace}.note{background:#e8f3f0;border-left:3px solid var(--teal);color:var(--dark);margin:18px 0;padding:13px 16px}.architecture-map{background:#fff;border:1px solid var(--line);border-radius:8px;margin:22px 0;padding:22px}.architecture-layer{display:grid;grid-template-columns:145px minmax(0,1fr);gap:18px;align-items:center}.layer-label{color:var(--muted);font-size:.68rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}.layer-content{border:1px solid var(--line);border-radius:7px;padding:14px 16px}.layer-content.shell{background:#f8ece8;border-color:#f1c7bb}.layer-content.route{background:#e8f3f0;border-color:#c5dfda}.layer-content.store{background:#eef0fa;border-color:#d4d7ec}.layer-content.backend{background:#f8f1df;border-color:#ead7a7}.layer-title{display:flex;align-items:center;justify-content:space-between;gap:12px}.layer-title strong{font-size:1rem}.layer-title span{color:var(--muted);font-size:.85rem}.layer-children{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}.child-node{background:#fff;border:1px solid #edc1b5;border-radius:5px;padding:11px}.child-node strong,.child-node small{display:block}.child-node small{color:var(--muted);font-size:.78rem;margin-top:3px}.layer-arrow{color:var(--coral);font-size:.78rem;font-weight:800;letter-spacing:.08em;padding:8px 0 8px 163px;text-transform:uppercase}.architecture-legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:16px}.architecture-legend span{align-items:center;color:var(--muted);display:flex;font-size:.8rem;gap:6px}.architecture-legend i{border-radius:3px;display:inline-block;height:10px;width:10px}.legend-shell{background:#e8755b}.legend-route{background:#087f78}.legend-store{background:#747bb0}.legend-backend{background:#c49120}
+    .timeline{border-left:2px solid #bddbd6;margin:24px 0 8px 14px;padding-left:28px}.step{position:relative;padding:0 0 24px}.step-no{align-items:center;background:var(--teal);border:4px solid var(--paper);border-radius:50%;color:#fff;display:flex;height:32px;justify-content:center;left:-45px;position:absolute;top:0;width:32px}.step strong{color:var(--dark);display:block}.step p{color:var(--muted);margin:3px 0 0}.endpoint-title{border-top:1px solid var(--line);margin-top:28px;padding-top:22px}.endpoint{background:#fff;border:1px solid var(--line);border-radius:5px;display:flex;gap:18px;justify-content:space-between;margin:8px 0;padding:13px 16px}.endpoint code{color:var(--dark);font-weight:700}.endpoint span{color:var(--muted)}.architecture-list{display:grid;gap:9px;margin-top:16px}.architecture-list div{background:#fff;border:1px solid var(--line);border-radius:5px;padding:12px 15px}.architecture-list strong{color:var(--dark);display:inline-block;min-width:190px}.relation-tags{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-top:8px}.relation-tag{border-radius:12px;font-size:.65rem;font-weight:800;padding:3px 7px}.input-tag{background:#d8eee9;color:var(--dark)}.output-tag{background:#ffe1d9;color:#9e4838}.sibling-tag{background:#f7ebc9;color:#805f13}.sibling-relation{border:1px dashed #d5b65e;border-radius:5px;color:#805f13;font-size:.75rem;margin:14px auto 0;max-width:80%;padding:8px;text-align:center}
+    .sequence{background:#fff;border:1px solid var(--line);border-radius:8px;overflow-x:auto;padding:24px 18px}.sequence-grid{display:grid;grid-template-columns:repeat(5,minmax(145px,1fr));min-width:820px}.sequence-head{background:#e8f3f0;border:1px solid #c5dfda;color:var(--dark);font-weight:800;padding:12px;text-align:center}.sequence-cell{border-right:1px dashed #b9c9cb;min-height:72px;position:relative}.sequence-cell:first-child{border-left:1px dashed #b9c9cb}.sequence-line{border-top:2px solid var(--coral);left:8%;position:absolute;right:8%;top:34px}.sequence-line:after{border-bottom:5px solid transparent;border-left:8px solid var(--coral);border-top:5px solid transparent;content:"";position:absolute;right:-1px;top:-6px}.sequence-line.return{border-top:2px dashed var(--teal);top:49px}.sequence-line.return:after{border-left:0;border-right:8px solid var(--teal);right:auto;left:-1px}.sequence-label{color:var(--muted);font-size:.72rem;position:absolute;text-align:center;top:8px;width:100%}.sequence-note{color:var(--muted);font-size:.9rem;margin:16px 0 0}.tree{background:#fff;border:1px solid var(--line);border-radius:8px;padding:24px}.tree-root,.tree-branch{align-items:center;display:flex;flex-direction:column}.tree-node{background:#e8f3f0;border:1px solid #b9dbd5;border-radius:6px;color:var(--dark);font-weight:800;padding:11px 16px;text-align:center}.tree-node.parent-node{background:#f8ece8;border-color:#efc4b7;color:#9e4838}.tree-node.store-node{background:#eef0fa;border-color:#d4d7ec;color:#50598e}.tree-node.backend-node{background:#f8f1df;border-color:#ead7a7;color:#805f13}.tree-connector{border-left:2px solid #a9c7c6;height:24px}.tree-children{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;position:relative;width:80%;}.tree-children:before{border-top:2px solid #a9c7c6;content:"";left:16.5%;position:absolute;right:16.5%;top:0}.tree-branch{padding-top:24px;position:relative}.tree-branch:before{border-left:2px solid #a9c7c6;content:"";height:24px;position:absolute;top:0}.tree-connector.short{height:18px}.tree-caption{color:var(--muted);font-size:.8rem;margin-top:5px}.tree-flow{color:var(--coral);font-size:.72rem;font-weight:800;letter-spacing:.08em;margin:14px 0;text-align:center;text-transform:uppercase}
+    @media(max-width:800px){.tabs,.grid-3{grid-template-columns:repeat(2,1fr)}.grid-2{grid-template-columns:1fr}.architecture-layer{grid-template-columns:1fr;gap:7px}.layer-arrow{padding:4px 0;text-align:center;transform:rotate(90deg)}.layer-children{grid-template-columns:1fr}.tree-children{width:100%}}@media(max-width:520px){.shell{padding:25px 14px 50px}.tabs,.grid-3{grid-template-columns:1fr}.endpoint{display:block}.endpoint span{display:block;margin-top:4px}.architecture-map{padding:14px}.layer-title{align-items:flex-start;flex-direction:column;gap:3px}.tree{padding:16px}.tree-children{display:block}.tree-branch{margin:14px 0}.tree-children:before{display:none}}
+  </style>
+</head>
+<body>
+<main class="shell">
+  <header>
+    <p class="eyebrow">Angular 17 + Spring Boot / Order feature</p>
+    <h1>Understand the architecture behind the Order CRUD screen</h1>
+    <p class="intro">A standalone interview guide for the recent changes: reactive forms, RxJS state, parent-child composition, sibling communication, search, and the Java backend API.</p>
+  </header>
+
+  <nav class="tabs" aria-label="Guide sections">
+    <button class="active" data-tab="overview"><span class="number">01</span>Architecture</button>
+    <button data-tab="relationships"><span class="number">02</span>Parent / Child / Siblings</button>
+    <button data-tab="sequence"><span class="number">03</span>Sequence Diagram</button>
+    <button data-tab="tree"><span class="number">04</span>Tree Architecture</button>
+    <button data-tab="rxjs"><span class="number">05</span>RxJS + Reactive Forms</button>
+    <button data-tab="backend"><span class="number">06</span>CRUD + Backend Flow</button>
+  </nav>
+
+  <section id="overview" class="panel active">
+    <div class="callout"><h2>What loads on the Order screen?</h2><p>When the user navigates to <code>/orders</code>, Angular creates one parent page and three child components. They are visible together because the parent template contains the child selectors.</p></div>
+    <div class="architecture-map" aria-label="Order screen architecture diagram">
+      <div class="architecture-layer">
+        <div class="layer-label">Application shell</div>
+        <div class="layer-content shell"><div class="layer-title"><strong>AppComponent</strong><span>persistent navigation + router-outlet</span></div></div>
+      </div>
+      <div class="layer-arrow">route: /orders</div>
+      <div class="architecture-layer">
+        <div class="layer-label">Routed parent</div>
+        <div class="layer-content route"><div class="layer-title"><strong>OrdersPageComponent</strong><span>owns the single-screen layout</span></div></div>
+      </div>
+      <div class="layer-arrow">renders children</div>
+      <div class="architecture-layer">
+        <div class="layer-label">Sibling children</div>
+        <div class="layer-content"><div class="layer-children"><div class="child-node"><strong>OrderSearchComponent</strong><small>search FormControl</small></div><div class="child-node"><strong>OrderListComponent</strong><small>orders @Input()</small></div><div class="child-node"><strong>OrderFormComponent</strong><small>CRUD FormGroup</small></div></div></div>
+      </div>
+      <div class="layer-arrow">shared state + HTTP</div>
+      <div class="architecture-layer">
+        <div class="layer-label">Shared boundaries</div>
+        <div class="layer-content store"><div class="layer-title"><strong>OrderStoreService</strong><span>BehaviorSubject + switchMap + refresh</span></div></div>
+      </div>
+      <div class="layer-arrow">HttpClient -> REST</div>
+      <div class="architecture-layer">
+        <div class="layer-label">Java backend</div>
+        <div class="layer-content backend"><div class="layer-title"><strong>OrderController -> OrderRepository -> H2</strong><span>/api/orders</span></div></div>
+      </div>
+      <div class="architecture-legend"><span><i class="legend-shell"></i>shell</span><span><i class="legend-route"></i>Angular parent</span><span><i class="legend-store"></i>RxJS state</span><span><i class="legend-backend"></i>Spring Boot</span></div>
+    </div>
+    <pre>// app-routing.module.ts
+{ path: 'orders', component: OrdersPageComponent }
+
+// orders-page.component.html
+&lt;app-order-search&gt;&lt;/app-order-search&gt;
+&lt;app-order-list
+  [orders]="(orders$ | async) ?? []"
+  (orderSelected)="onOrderSelected($event)"&gt;
+&lt;/app-order-list&gt;
+&lt;app-order-form [selectedOrder]="selectedOrder$ | async"&gt;
+&lt;/app-order-form&gt;</pre>
+    <div class="architecture-list">
+      <div><strong>Parent</strong> OrdersPageComponent coordinates the screen and exposes orders$, selectedOrder$, and error$.</div>
+      <div><strong>Child 1</strong> OrderSearchComponent owns the search FormControl.</div>
+      <div><strong>Child 2</strong> OrderListComponent receives orders through @Input() and emits the selected order through @Output().</div>
+      <div><strong>Child 3</strong> OrderFormComponent receives selectedOrder through @Input() and handles CRUD form actions.</div>
+      <div><strong>Shared boundary</strong> OrderStoreService connects siblings using RxJS observables and commands.</div>
+      <div><strong>Backend boundary</strong> OrderService uses HttpClient to call Spring Boot at http://localhost:8080/api/orders.</div>
+    </div>
+  </section>
+
+  <section id="relationships" class="panel">
+    <div class="grid-3">
+      <article class="card parent"><span class="tag">Parent</span><h2>OrdersPageComponent</h2><p>Owns the layout. It does not manually pass events from search to form; it exposes streams from the shared store.</p><pre>readonly orders$ = this.orderStore.orders$;
+readonly selectedOrder$ =
+  this.orderStore.selectedOrder$;</pre></article>
+      <article class="card child"><span class="tag">Child</span><h2>OrderListComponent</h2><p>Receives data from the parent with @Input() and emits selection upward with @Output().</p><pre>@Input() orders: Order[] = [];
+@Output() orderSelected =
+  new EventEmitter&lt;Order&gt;();
+
+selectOrder(order: Order): void {
+  this.orderSelected.emit(order);
+}</pre></article>
+      <article class="card sibling"><span class="tag">Sibling</span><h2>OrderSearchComponent</h2><p>Is a sibling of the list and form. It communicates through OrderStoreService instead of calling either sibling.</p><pre>valueChanges.subscribe(term =&gt;
+  this.orderStore.search(term)
+);</pre></article>
+    </div>
+    <div class="callout" style="margin-top:16px"><h2>Why use a shared service for siblings?</h2><p>Siblings should not depend directly on each other. The store gives them one predictable state boundary: search publishes a term, the list observes orders, and the form observes the selected order.</p></div>
+    <pre>// Parent-to-child
+&lt;app-order-form [selectedOrder]="selectedOrder$ | async"&gt;
+&lt;/app-order-form&gt;
+
+// Child-to-parent event used by this app
+@Output() orderSelected = new EventEmitter&lt;Order&gt;();
+this.orderSelected.emit(order);
+
+// Parent receives the event and updates shared state
+onOrderSelected(order: Order): void {
+  this.orderStore.select(order);
+}
+
+// Sibling communication used by this app
+this.orderStore.search(term);</pre>
+  </section>
+
+  <section id="sequence" class="panel">
+    <div class="callout"><h2>Sequence: customer search</h2><p>Follow one search from the input control to the database and back. The dashed arrows represent the response returning through the same layers.</p></div>
+    <div class="sequence" aria-label="Order search sequence diagram">
+      <div class="sequence-grid">
+        <div class="sequence-head">User</div><div class="sequence-head">OrderSearch</div><div class="sequence-head">OrderStore</div><div class="sequence-head">OrderService</div><div class="sequence-head">Spring Boot</div>
+        <div class="sequence-cell"><div class="sequence-line"><span class="sequence-label">types "Priya" / clicks order</span></div></div><div class="sequence-cell"></div><div class="sequence-cell"></div><div class="sequence-cell"></div><div class="sequence-cell"></div>
+        <div class="sequence-cell"></div><div class="sequence-cell"><div class="sequence-line"><span class="sequence-label">valueChanges / @Output()</span></div></div><div class="sequence-cell"></div><div class="sequence-cell"></div><div class="sequence-cell"></div>
+        <div class="sequence-cell"></div><div class="sequence-cell"></div><div class="sequence-cell"><div class="sequence-line"><span class="sequence-label">search(term)</span></div></div><div class="sequence-cell"></div><div class="sequence-cell"></div>
+        <div class="sequence-cell"></div><div class="sequence-cell"></div><div class="sequence-cell"></div><div class="sequence-cell"><div class="sequence-line"><span class="sequence-label">GET /api/orders</span></div></div><div class="sequence-cell"></div>
+        <div class="sequence-cell"></div><div class="sequence-cell"></div><div class="sequence-cell"></div><div class="sequence-cell"></div><div class="sequence-cell"><div class="sequence-line"><span class="sequence-label">repository search</span></div></div>
+        <div class="sequence-cell"></div><div class="sequence-cell"></div><div class="sequence-cell"></div><div class="sequence-cell"></div><div class="sequence-cell"><div class="sequence-line return"><span class="sequence-label">Order[] response</span></div></div>
+        <div class="sequence-cell"></div><div class="sequence-cell"></div><div class="sequence-cell"></div><div class="sequence-cell"><div class="sequence-line return"><span class="sequence-label">Observable&lt;Order[]&gt;</span></div></div><div class="sequence-cell"></div>
+        <div class="sequence-cell"></div><div class="sequence-cell"></div><div class="sequence-cell"><div class="sequence-line return"><span class="sequence-label">orders$ emits</span></div></div><div class="sequence-cell"></div><div class="sequence-cell"></div>
+        <div class="sequence-cell"></div><div class="sequence-cell"><div class="sequence-line return"><span class="sequence-label">async pipe updates list</span></div></div><div class="sequence-cell"></div><div class="sequence-cell"></div><div class="sequence-cell"></div>
+      </div>
+      <p class="sequence-note"><strong>Why switchMap?</strong> If the user types again before the previous request finishes, the older request is no longer the active result.</p>
+    </div>
+    <pre>// Search sibling -> shared store
+this.searchControl.valueChanges.subscribe(term =&gt;
+  this.orderStore.search(term)
+);
+
+debounceTime(250),
+distinctUntilChanged(),
+switchMap(term =&gt; this.orderService.search(term));
+
+// List child -> parent -> shared store
+this.orderSelected.emit(order);
+this.orderStore.select(order);</pre>
+  </section>
+
+  <section id="tree" class="panel">
+    <div class="callout"><h2>Tree: who owns whom?</h2><p>This view emphasizes containment. Solid parent-child branches show rendering relationships; the shared store sits beside the tree conceptually because siblings use it for communication.</p></div>
+    <div class="tree" aria-label="Order component tree architecture diagram">
+      <div class="tree-root"><div class="tree-node">AppComponent</div><div class="tree-caption">application shell</div><div class="tree-connector"></div><div class="tree-node parent-node">OrdersPageComponent</div><div class="tree-caption">routed parent: /orders</div><div class="tree-connector"></div></div>
+      <div class="tree-children">
+        <div class="tree-branch"><div class="tree-node">OrderSearchComponent</div><div class="relation-tags"><span class="relation-tag sibling-tag">Sibling A</span><span class="relation-tag output-tag">command: search()</span></div><div class="tree-caption">FormControl + search</div></div>
+        <div class="tree-branch"><div class="tree-node">OrderListComponent</div><div class="relation-tags"><span class="relation-tag sibling-tag">Sibling B</span><span class="relation-tag input-tag">@Input() orders</span><span class="relation-tag output-tag">@Output() orderSelected</span></div><div class="tree-caption">receives list, emits selection</div></div>
+        <div class="tree-branch"><div class="tree-node">OrderFormComponent</div><div class="relation-tags"><span class="relation-tag sibling-tag">Sibling C</span><span class="relation-tag input-tag">@Input() selectedOrder</span><span class="relation-tag output-tag">save / delete</span></div><div class="tree-caption">FormGroup + CRUD</div></div>
+      </div>
+        <div class="sibling-relation">Sibling relation: Search, List, and Form do not call each other directly. They communicate through OrderStoreService.</div>
+      <div class="tree-flow">all three siblings use the same state boundary</div>
+      <div class="tree-root"><div class="tree-connector short"></div><div class="tree-node store-node">OrderStoreService</div><div class="tree-caption">BehaviorSubject + RxJS operators</div><div class="tree-connector"></div><div class="tree-node backend-node">OrderService -> OrderController -> Repository -> H2</div><div class="tree-caption">HTTP and persistence boundary</div></div>
+    </div>
+    <pre>// order-list.component.ts
+@Output() orderSelected = new EventEmitter&lt;Order&gt;();
+
+selectOrder(order: Order): void {
+  this.orderSelected.emit(order);
+}
+
+// orders-page.component.html
+&lt;app-order-list
+  [orders]="(orders$ | async) ?? []"
+  (orderSelected)="onOrderSelected($event)"&gt;
+&lt;/app-order-list&gt;</pre>
+    <div class="grid-3" style="margin-top:16px"><div class="card"><h3>Containment</h3><p>The parent template renders the three child selectors, so they appear on the same screen.</p></div><div class="card"><h3>Communication</h3><p>@Input() carries data down. @Output() sends the selected order up. The shared service coordinates the sibling search and form.</p></div><div class="card"><h3>Persistence</h3><p>The Angular service hides HTTP details from components; Spring Boot handles JPA persistence.</p></div></div>
+  </section>
+
+  <section id="rxjs" class="panel">
+    <div class="callout"><h2>Search pipeline</h2><p>The search control emits values. The store waits for typing to pause, ignores duplicates, cancels stale requests, and shares the latest result with the list.</p></div>
+    <div class="timeline">
+      <div class="step"><span class="step-no">1</span><strong>Reactive FormControl</strong><p>OrderSearchComponent exposes a non-nullable searchControl.</p><pre>readonly searchControl = new FormControl('', {
+  nonNullable: true
+});</pre></div>
+      <div class="step"><span class="step-no">2</span><strong>RxJS input stream</strong><p>Every value is sent to the shared store.</p><pre>this.searchControl.valueChanges.subscribe(
+  term =&gt; this.orderStore.search(term)
+);</pre></div>
+      <div class="step"><span class="step-no">3</span><strong>Debounce and cancel</strong><p>Only the latest search is sent to the backend.</p><pre>debounceTime(250),
+distinctUntilChanged(),
+switchMap(term =&gt; this.orderService.search(term))</pre></div>
+      <div class="step"><span class="step-no">4</span><strong>Async pipe renders</strong><p>The parent binds orders$ and Angular subscribes/unsubscribes through the async pipe.</p><pre>&lt;app-order-list
+  [orders]="(orders$ | async) ?? []"&gt;
+&lt;/app-order-list&gt;</pre></div>
+    </div>
+    <h2>Reactive CRUD form</h2>
+    <pre>readonly orderForm = this.formBuilder.nonNullable.group({
+  customerName: ['', [Validators.required, Validators.minLength(2)]],
+  product: ['', Validators.required],
+  quantity: [1, [Validators.required, Validators.min(1)]],
+  totalAmount: [0, [Validators.required, Validators.min(0)]],
+  status: ['NEW' as OrderStatus, Validators.required]
+});
+
+submit(): void {
+  if (this.orderForm.invalid) {
+    this.orderForm.markAllAsTouched();
+    return;
+  }
+  this.orderStore.save(this.orderForm.getRawValue());
+}</pre>
+  </section>
+
+  <section id="backend" class="panel">
+    <div class="callout"><h2>End-to-end create flow</h2><p>The same pattern applies to search, update, and delete. The list uses @Output() to send selection to the parent, the parent updates the RxJS store, and the form uses @Input() selectedOrder before the UI talks to the Angular service and Spring Boot API.</p></div>
+    <div class="timeline">
+      <div class="step"><span class="step-no">1</span><strong>Angular UI</strong><p>User submits OrderFormComponent.</p></div>
+      <div class="step"><span class="step-no">2</span><strong>OrderStoreService</strong><p>Chooses create or update based on whether selectedOrder has an ID.</p><pre>const request$ = selected?.id
+  ? this.orderService.update(selected.id, order)
+  : this.orderService.create(order);</pre></div>
+      <div class="step"><span class="step-no">3</span><strong>OrderService / HttpClient</strong><p>POST, PUT, GET, and DELETE requests target the order API.</p><pre>return this.http.post&lt;Order&gt;(
+  'http://localhost:8080/api/orders', order
+);</pre></div>
+      <div class="step"><span class="step-no">4</span><strong>Spring Boot controller</strong><p>OrderController maps JSON to Order and delegates persistence to OrderRepository.</p><pre>@PostMapping
+public ResponseEntity&lt;Order&gt; createOrder(
+    @RequestBody Order order) {
+  return ResponseEntity.status(HttpStatus.CREATED)
+      .body(orderRepository.save(order));
+}</pre></div>
+      <div class="step"><span class="step-no">5</span><strong>Response and refresh</strong><p>The store selects the saved order and emits refreshSubject, causing orders$ to reload.</p><pre>tap(savedOrder =&gt; {
+  this.selectedOrderSubject.next(savedOrder);
+  this.refreshSubject.next();
+})</pre></div>
+    </div>
+    <h2 class="endpoint-title">Order REST API</h2>
+    <div class="endpoint"><code>GET /api/orders?customerName=Priya</code><span>Search orders by customer</span></div>
+    <div class="endpoint"><code>GET /api/orders/{id}</code><span>Read one order</span></div>
+    <div class="endpoint"><code>POST /api/orders</code><span>Create order</span></div>
+    <div class="endpoint"><code>PUT /api/orders/{id}</code><span>Update order</span></div>
+    <div class="endpoint"><code>DELETE /api/orders/{id}</code><span>Delete order</span></div>
+    <h2 class="endpoint-title">Backend layers</h2>
+    <div class="grid-3"><div class="card"><h3>Order.java</h3><p>JPA entity mapped to the orders table.</p></div><div class="card"><h3>OrderRepository.java</h3><p>JpaRepository plus customerName search method.</p></div><div class="card"><h3>OrderController.java</h3><p>REST endpoints, status codes, and request mapping.</p></div></div>
+  </section>
+</main>
+<script>
+  document.querySelectorAll('.tabs button').forEach(function(button){
+    button.addEventListener('click',function(){
+      document.querySelectorAll('.tabs button').forEach(function(item){item.classList.remove('active')});
+      document.querySelectorAll('.panel').forEach(function(panel){panel.classList.remove('active')});
+      button.classList.add('active');
+      document.getElementById(button.dataset.tab).classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

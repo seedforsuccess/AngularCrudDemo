@@ -1,0 +1,41 @@
+<section class="form-panel">
+  <div class="panel-heading">
+    <div><p class="eyebrow">Child component</p><h2>{{ selectedOrder ? 'Edit order' : 'New order' }}</h2></div>
+    @if (selectedOrder) { <button type="button" class="btn btn-link btn-sm" (click)="clear()">New order</button> }
+  </div>
+
+  <form [formGroup]="orderForm" (ngSubmit)="submit()" novalidate>
+    <div class="form-group">
+      <label for="customerName">Customer</label>
+      <input id="customerName" class="form-control" formControlName="customerName" />
+      @if (orderForm.controls.customerName.invalid && orderForm.controls.customerName.touched) {
+      <small class="error">Customer name is required.</small>
+      }
+    </div>
+    <div class="form-group">
+      <label for="product">Product</label>
+      <input id="product" class="form-control" formControlName="product" />
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="quantity">Quantity</label>
+        <input id="quantity" class="form-control" type="number" formControlName="quantity" />
+      </div>
+      <div class="form-group">
+        <label for="totalAmount">Total amount</label>
+        <input id="totalAmount" class="form-control" type="number" step="0.01" formControlName="totalAmount" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="status">Status</label>
+      <select id="status" class="form-control" formControlName="status">
+        @for (status of statuses; track status) { <option [value]="status">{{ status }}</option> }
+      </select>
+    </div>
+    <div class="actions">
+      <button type="submit" class="btn btn-success" [disabled]="saving">{{ saving ? 'Saving...' : (selectedOrder ? 'Update order' : 'Create order') }}</button>
+      @if (selectedOrder) { <button type="button" class="btn btn-outline-danger" [disabled]="deleting" (click)="delete()">{{ deleting ? 'Deleting...' : 'Delete' }}</button> }
+    </div>
+    @if (message) { <p class="message">{{ message }}</p> }
+  </form>
+</section>
