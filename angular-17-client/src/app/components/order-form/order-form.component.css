@@ -1,0 +1,11 @@
+.form-panel { background: white; border: 1px solid #dbe2e6; border-radius: 6px; padding: 1.2rem; }
+.panel-heading { align-items: end; display: flex; justify-content: space-between; margin-bottom: .9rem; }
+.panel-heading h2 { font-family: Georgia, 'Times New Roman', serif; margin: 0; }
+.eyebrow { color: #e8755b; font-size: .68rem; font-weight: 800; letter-spacing: .1em; margin: 0 0 .25rem; text-transform: uppercase; }
+.form-group { margin-bottom: .8rem; }
+.form-group label { display: block; font-size: .86rem; font-weight: 700; margin-bottom: .3rem; }
+.form-row { display: grid; gap: .7rem; grid-template-columns: 1fr 1fr; }
+.error { color: #b04435; display: block; margin-top: .25rem; }
+.actions { display: flex; gap: .6rem; margin-top: 1.2rem; }
+.message { color: #075e59; font-size: .88rem; margin: .8rem 0 0; }
+@media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }

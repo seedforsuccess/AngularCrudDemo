@@ -8,13 +8,21 @@ import { AppComponent } from './app.component';
 import { AddTutorialComponent } from './components/add-tutorial/add-tutorial.component';
 import { TutorialDetailsComponent } from './components/tutorial-details/tutorial-details.component';
 import { TutorialsListComponent } from './components/tutorials-list/tutorials-list.component';
+import { OrdersPageComponent } from './components/orders-page/orders-page.component';
+import { OrderSearchComponent } from './components/order-search/order-search.component';
+import { OrderListComponent } from './components/order-list/order-list.component';
+import { OrderFormComponent } from './components/order-form/order-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AddTutorialComponent,
     TutorialDetailsComponent,
-    TutorialsListComponent
+    TutorialsListComponent,
+    OrdersPageComponent,
+    OrderSearchComponent,
+    OrderListComponent,
+    OrderFormComponent
   ],
   imports: [
     BrowserModule,
